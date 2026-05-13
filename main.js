@@ -80,7 +80,7 @@ const pointLight = new THREE.PointLight(
   4
 );
 
-pointLight.position.set(5, 5, 5);
+pointLight.position.set(300, 0, 0);
 
 scene.add(pointLight);
 
@@ -166,12 +166,21 @@ const originSphere = new THREE.Mesh(
   })
 );
 
+const sun = new THREE.Mesh(
+  new THREE.SphereGeometry(30.9, 126, 126),
+  new THREE.MeshStandardMaterial({
+    color: 0xffffff
+  })
+);
+sun.position.set(300,0,0);
+
 hoverSphere.visible = false;
 selectedSphere.visible = false;
 
 scene.add(hoverSphere);
 scene.add(selectedSphere);
 scene.add(originSphere);
+scene.add(sun);
 
 
 // --------------------------------------------------
@@ -249,9 +258,17 @@ const currentFocus = new THREE.Vector3();
 // ANIMATION
 // --------------------------------------------------
 
-function animate() {
+function animate(time) {
 
   requestAnimationFrame(animate);
+
+  // Example 1: smooth circular motion
+  sun.position.x = Math.sin(time * 0.00003) * 300;
+  sun.position.y = Math.cos(time * 0.00003) * 300;
+
+  // Optional: rotation too
+  sun.rotation.y += 0.01;
+
 
   controls.update();
 
