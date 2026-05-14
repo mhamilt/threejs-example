@@ -71,7 +71,7 @@ controls.dampingFactor = 0.05;
 
 const ambient = new THREE.AmbientLight(
   0xffffff,
-  0.25
+  0.05
 );
 
 scene.add(ambient);
@@ -142,7 +142,7 @@ geometry.setAttribute(
 
 const material = new THREE.PointsMaterial({
   color: 0xffffff,
-  size: 0.06,
+  size: 0.1,
   sizeAttenuation: true
 });
 
@@ -291,10 +291,10 @@ window.addEventListener("dblclick", () => {
     // originLine.geometry.attributes.position.needsUpdate = true;
     // lineEnd.set({x:pos.getX(i),y:pos.getY(i),z:pos.getZ(i)});
     // updateLine(originLine, origin, lineEnd);
-  //   originLine.quaternion.setFromUnitVectors(
-  //   new THREE.Vector3(0, 1, 0), // cylinder default up axis
-  //   direction.clone().normalize()
-  // );
+    //   originLine.quaternion.setFromUnitVectors(
+    //   new THREE.Vector3(0, 1, 0), // cylinder default up axis
+    //   direction.clone().normalize()
+    // );
 
     selectedSphere.visible = true;
 
@@ -303,6 +303,10 @@ window.addEventListener("dblclick", () => {
 
     const word = words[i];
     hud.textContent = word;
+  }
+  else {
+    targetFocus.copy(origin)
+    selectedSphere.visible = false;
   }
 });
 
