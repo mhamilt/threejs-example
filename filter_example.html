@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Three.js Embeddings Viewer</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    #hud {
+      position: fixed;
+      color: white;
+      font-family: monospace;
+      font-size: 32pt;
+      left: 3em;
+      bottom: 3em;
+      background: rgba(0, 0, 0, 0.0);
+      padding: 6px 10px;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+  <script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js"
+  }
+}
+</script>
+
+  <div id="hud"></div>
+  <script type="module" src="./filter_example.js"></script>
+</body>
+
+</html>

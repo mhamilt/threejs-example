@@ -108,7 +108,7 @@ lightSphere.position.set(5, 0, 0);
 // BUILD POINT CLOUD
 // --------------------------------------------------
 
-const SCALE = 300;
+const SCALE = 50;
 
 const words = [];
 const positions = [];
@@ -151,7 +151,7 @@ const material = new THREE.PointsMaterial({
 const pointMaterial = new THREE.ShaderMaterial({
 
   uniforms: {
-    pointSize: { value: 0.2 }
+    pointSize: { value: 3.0 }
   },
 
   vertexShader: `
