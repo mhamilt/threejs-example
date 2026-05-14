@@ -107,7 +107,7 @@ lightSphere.position.set(5, 0, 0);
 // BUILD POINT CLOUD
 // --------------------------------------------------
 
-const SCALE = 100;
+const SCALE = 300;
 
 const words = [];
 const positions = [];
@@ -142,10 +142,50 @@ geometry.setAttribute(
 
 const material = new THREE.PointsMaterial({
   color: 0xffffff,
-  size: 0.1,
+  size: 0.01,
   sizeAttenuation: true
 });
 
+
+const pointMaterial = new THREE.ShaderMaterial({
+
+  uniforms: {
+    pointSize: { value: 0.2 }
+  },
+
+  vertexShader: `
+
+    uniform float pointSize;
+
+    void main() {
+
+      vec4 mvPosition =
+        modelViewMatrix * vec4(position, 1.0);
+
+      gl_PointSize =
+        pointSize * (300.0 / -mvPosition.z);
+
+      gl_Position =
+        projectionMatrix * mvPosition;
+    }
+  `,
+
+  fragmentShader: `
+
+    void main() {
+
+      vec2 c = gl_PointCoord - vec2(0.5);
+
+      if (length(c) > 0.5)
+        discard;
+
+      gl_FragColor =
+        vec4(1.0, 1.0, 1.0, 1.0);
+    }
+  `,
+
+  transparent: true
+});
 
 // --------------------------------------------------
 // POINT CLOUD
@@ -153,7 +193,7 @@ const material = new THREE.PointsMaterial({
 
 const pointCloud = new THREE.Points(
   geometry,
-  material
+  pointMaterial
 );
 
 scene.add(pointCloud);
@@ -188,13 +228,13 @@ const sun = new THREE.Mesh(
   new THREE.SphereGeometry(30.9, 32, 32),
   lightSphereMaterial
 );
-sun.position.set(300, 0, 0);
+sun.position.set(3*SCALE, 0, 0);
 
 const sunLight = new THREE.PointLight(
   0xffffff,
-  200000
+  2000000
 );
-sunLight.position.set(300, 0, 0);
+sunLight.position.set(3*SCALE, 0, 0);
 
 
 hoverSphere.visible = false;
@@ -328,8 +368,8 @@ function animate(time) {
   requestAnimationFrame(animate);
 
   // Example 1: smooth circular motion
-  sun.position.x = Math.sin(time * 0.00003) * 300;
-  sun.position.y = Math.cos(time * 0.00003) * 300;
+  sun.position.x = Math.sin(time * 0.00003) * 2.5 * SCALE;
+  sun.position.y = Math.cos(time * 0.00003) * 2.5 * SCALE;
   sunLight.position.x = sun.position.x;
   sunLight.position.y = sun.position.y;
 
