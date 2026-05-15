@@ -88,16 +88,13 @@ pointLight.position.set(5, 0, 0);
 
 const lightSphereMaterial = new THREE.MeshStandardMaterial({
   color: 0xffffff,
+  emissive: 0xffffff,
 });
 
 const lightSphere = new THREE.Mesh(
   new THREE.SphereGeometry(1, 32, 32),
   lightSphereMaterial
 );
-
-lightSphereMaterial.emissive.r = 1;
-lightSphereMaterial.emissive.g = 1;
-lightSphereMaterial.emissive.b = 1;
 
 console.log(lightSphereMaterial.emissive);
 lightSphere.position.set(5, 0, 0);
@@ -344,7 +341,7 @@ selectedSphere.visible = false;
 
 scene.add(hoverSphere);
 scene.add(selectedSphere);
-// scene.add(originSphere);
+scene.add(originSphere);
 scene.add(sun);
 scene.add(sunLight);
 

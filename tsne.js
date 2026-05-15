@@ -344,7 +344,7 @@ selectedSphere.visible = false;
 
 scene.add(hoverSphere);
 scene.add(selectedSphere);
-// scene.add(originSphere);
+scene.add(originSphere);
 scene.add(sun);
 scene.add(sunLight);
 
