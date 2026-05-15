@@ -108,7 +108,7 @@ lightSphere.position.set(5, 0, 0);
 // BUILD POINT CLOUD
 // --------------------------------------------------
 
-const SCALE = 50;
+const SCALE = 100;
 
 const words = [];
 const positions = [];
@@ -151,7 +151,7 @@ const material = new THREE.PointsMaterial({
 const pointMaterial = new THREE.ShaderMaterial({
 
   uniforms: {
-    pointSize: { value: 3.0 }
+    pointSize: { value: 1.0 }
   },
 
   vertexShader: `
@@ -278,7 +278,7 @@ const originLine = new THREE.Mesh(originCyli, lightSphereMaterial);
 const raycaster = new THREE.Raycaster();
 
 // controls picking radius
-raycaster.params.Points.threshold = 0.12;
+raycaster.params.Points.threshold = 1.0;
 
 const mouse = new THREE.Vector2();
 

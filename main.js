@@ -2,19 +2,21 @@ import * as THREE from
   'https://cdn.jsdelivr.net/npm/three@0.165/build/three.module.js';
 import { OrbitControls } from
   "https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/controls/OrbitControls.js";
+import { ImprovedNoise } from 'https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/math/ImprovedNoise.js';
+import { STLLoader } from 'https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/loaders/STLLoader.js';
 
 // --------------------------------------------------
 // EMBEDDINGS
 // --------------------------------------------------
 
-// import { embeddings } from './data/embeddings.js';
-import { embeddings } from './data/hagrid_pca.js';
+import { embeddings } from './data/embeddings.js';
 
 // --------------------------------------------------
 // HUD
 // --------------------------------------------------
 
 const hud = document.getElementById('hud');
+
 // --------------------------------------------------
 // SCENE
 // --------------------------------------------------
@@ -204,8 +206,11 @@ scene.add(pointCloud);
 // HOVER SPHERE
 // --------------------------------------------------
 
+const sphereGeometry =
+  new THREE.SphereGeometry(1, 128, 128);
+
 const hoverSphere = new THREE.Mesh(
-  new THREE.SphereGeometry(0.9, 32, 32),
+  sphereGeometry,
   new THREE.MeshStandardMaterial({
     color: 0xff0000
   })
@@ -218,24 +223,120 @@ const selectedSphere = new THREE.Mesh(
   })
 );
 
+// const noise = new ImprovedNoise();
+
+// function changeSphere() {
+//   //   const position = sphereGeometry.attributes.position;
+//   // const vertex = new THREE.Vector3();
+//   // const normal = new THREE.Vector3();
+//   // for (let i = 0; i < position.count; i++) {
+
+//   //     vertex.fromBufferAttribute(position, i);
+
+//   //     // Original sphere direction
+//   //     normal.copy(vertex).normalize();
+
+//   //     // Noise coordinates
+//   //     const frequency = 8;
+//   //     const amplitude = 0.07;
+
+//   //     const n = noise.noise(
+//   //       normal.x * frequency,
+//   //       normal.y * frequency,
+//   //       normal.z * frequency
+//   //     );
+
+//   //     // Push vertex outward along normal
+//   //     const radius = 1 + n * amplitude;
+
+//   //     vertex.copy(normal).multiplyScalar(radius);
+
+//   //     position.setXYZ(i, vertex.x, vertex.y, vertex.z);
+//   //   }
+
+//   //   position.needsUpdate = true;
+
+//   //   sphereGeometry.computeVertexNormals();
+//   const position = sphereGeometry.attributes.position;
+
+//   const p = new THREE.Vector3();
+//   const n = new THREE.Vector3();
+
+//   const frequency = 5.2;   // constant everywhere
+//   const amplitude = 0.25;
+
+//   for (let i = 0; i < position.count; i++) {
+
+//     p.fromBufferAttribute(position, i);
+
+//     // normalize -> point on unit sphere
+//     n.copy(p).normalize();
+
+//     // seamless 3D noise sampling on sphere surface
+//     const value = noise.noise(
+//       n.x * frequency,
+//       n.y * frequency,
+//       n.z * frequency
+//     );
+
+//     // displacement strictly along normal
+//     const radius = 1 + value * amplitude;
+
+//     p.copy(n).multiplyScalar(radius);
+
+//     position.setXYZ(i, p.x, p.y, p.z);
+//   }
+
+//   sphereGeometry.computeVertexNormals();
+//   position.needsUpdate = true;
+// }
+
+// changeSphere();
+
+const loader = new STLLoader();
+
+loader.load('/earthmap.stl', (geometry) => {
+  const material = new THREE.MeshStandardMaterial({ color: 0x0000ff });
+  const mesh = new THREE.Mesh(geometry, material);
+
+  // Optional: center it
+  geometry.computeBoundingBox();
+  geometry.center();
+   geometry.computeVertexNormals();
+
+  const size = new THREE.Vector3();
+  geometry.boundingBox.getSize(size);
+
+  console.log(size)
+
+  scene.add(mesh);
+},
+  undefined,
+  function (error) {
+    console.error("Error loading STL:", error);
+  });
+
+
 const originSphere = new THREE.Mesh(
-  new THREE.SphereGeometry(0.9, 32, 32),
+  sphereGeometry,
   new THREE.MeshStandardMaterial({
     color: 0x0000ff
   })
 );
 
+
+
 const sun = new THREE.Mesh(
   new THREE.SphereGeometry(30.9, 32, 32),
   lightSphereMaterial
 );
-sun.position.set(3*SCALE, 0, 0);
+sun.position.set(3 * SCALE, 0, 0);
 
 const sunLight = new THREE.PointLight(
   0xffffff,
   2000000
 );
-sunLight.position.set(3*SCALE, 0, 0);
+sunLight.position.set(3 * SCALE, 0, 0);
 
 
 hoverSphere.visible = false;
@@ -243,7 +344,7 @@ selectedSphere.visible = false;
 
 scene.add(hoverSphere);
 scene.add(selectedSphere);
-scene.add(originSphere);
+// scene.add(originSphere);
 scene.add(sun);
 scene.add(sunLight);
 
@@ -519,3 +620,5 @@ function updateLine(cylinder, start, end) {
   // update scale instead of rebuilding geometry
   cylinder.scale.set(1, length, 1);
 }
+
+
