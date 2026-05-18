@@ -4,7 +4,7 @@ import { OrbitControls } from
   "https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/controls/OrbitControls.js";
 import { ImprovedNoise } from 'https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/math/ImprovedNoise.js';
 import { STLLoader } from 'https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/loaders/STLLoader.js';
-
+import { VRButton } from 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/webxr/VRButton.js';
 // --------------------------------------------------
 // EMBEDDINGS
 // --------------------------------------------------
@@ -53,7 +53,7 @@ renderer.setSize(
 );
 
 document.body.appendChild(renderer.domElement);
-
+document.body.appendChild( VRButton.createButton( renderer ) );
 
 // --------------------------------------------------
 // ORBIT CONTROLS

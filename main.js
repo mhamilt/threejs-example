@@ -4,12 +4,12 @@ import { OrbitControls } from
   "https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/controls/OrbitControls.js";
 import { ImprovedNoise } from 'https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/math/ImprovedNoise.js';
 import { STLLoader } from 'https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/loaders/STLLoader.js';
-
+import { VRButton } from 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/webxr/VRButton.js';
 // --------------------------------------------------
 // EMBEDDINGS
 // --------------------------------------------------
 
-import { embeddings } from './data/embeddings.js';
+import { embeddings } from './data/embeddings_PCA.js';
 
 // --------------------------------------------------
 // HUD
@@ -53,7 +53,7 @@ renderer.setSize(
 );
 
 document.body.appendChild(renderer.domElement);
-
+document.body.appendChild( VRButton.createButton( renderer ) );
 
 // --------------------------------------------------
 // ORBIT CONTROLS
@@ -110,7 +110,7 @@ lightSphere.position.set(5, 0, 0);
 // BUILD POINT CLOUD
 // --------------------------------------------------
 
-const SCALE = 300;
+const SCALE = 200;
 
 const words = [];
 const positions = [];
@@ -293,28 +293,28 @@ const selectedSphere = new THREE.Mesh(
 
 // changeSphere();
 
-const loader = new STLLoader();
+// const loader = new STLLoader();
 
-loader.load('/earthmap.stl', (geometry) => {
-  const material = new THREE.MeshStandardMaterial({ color: 0x0000ff });
-  const mesh = new THREE.Mesh(geometry, material);
+// loader.load('/earthmap.stl', (geometry) => {
+//   const material = new THREE.MeshStandardMaterial({ color: 0x0000ff });
+//   const mesh = new THREE.Mesh(geometry, material);
 
-  // Optional: center it
-  geometry.computeBoundingBox();
-  geometry.center();
-   geometry.computeVertexNormals();
+//   // Optional: center it
+//   geometry.computeBoundingBox();
+//   geometry.center();
+//    geometry.computeVertexNormals();
 
-  const size = new THREE.Vector3();
-  geometry.boundingBox.getSize(size);
+//   const size = new THREE.Vector3();
+//   geometry.boundingBox.getSize(size);
 
-  console.log(size)
+//   console.log(size)
 
-  scene.add(mesh);
-},
-  undefined,
-  function (error) {
-    console.error("Error loading STL:", error);
-  });
+//   scene.add(mesh);
+// },
+//   undefined,
+//   function (error) {
+//     console.error("Error loading STL:", error);
+//   });
 
 
 const originSphere = new THREE.Mesh(
@@ -344,7 +344,7 @@ selectedSphere.visible = false;
 
 scene.add(hoverSphere);
 scene.add(selectedSphere);
-// scene.add(originSphere);
+scene.add(originSphere);
 scene.add(sun);
 scene.add(sunLight);
 
