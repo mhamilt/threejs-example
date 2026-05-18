@@ -1,10 +1,9 @@
 import * as THREE from
   'https://cdn.jsdelivr.net/npm/three@0.165/build/three.module.js';
-import { OrbitControls } from
-  "https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/controls/OrbitControls.js";
-import { ImprovedNoise } from 'https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/math/ImprovedNoise.js';
-import { STLLoader } from 'https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/loaders/STLLoader.js';
+import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.165/examples/jsm/controls/OrbitControls.js";
 import { VRButton } from 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/webxr/VRButton.js';
+import { XRControllerModelFactory } from 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/webxr/XRControllerModelFactory.js';
+import { XRHandModelFactory } from 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/webxr/XRHandModelFactory.js';
 // --------------------------------------------------
 // EMBEDDINGS
 // --------------------------------------------------
@@ -47,25 +46,28 @@ const renderer = new THREE.WebGLRenderer({
   antialias: true
 });
 
+renderer.xr.enabled = true;
+
 renderer.setSize(
   window.innerWidth,
   window.innerHeight
 );
 
 document.body.appendChild(renderer.domElement);
-document.body.appendChild( VRButton.createButton( renderer ) );
+document.body.appendChild(VRButton.createButton(renderer));
+
 
 // --------------------------------------------------
 // ORBIT CONTROLS
 // --------------------------------------------------
 
-const controls = new OrbitControls(
-  camera,
-  renderer.domElement
-);
+// const controls = new OrbitControls(
+//   camera,
+//   renderer.domElement
+// );
 
-controls.enableDamping = true;
-controls.dampingFactor = 0.05;
+// controls.enableDamping = true;
+// controls.dampingFactor = 0.05;
 
 
 // --------------------------------------------------
@@ -479,7 +481,7 @@ function animate(time) {
   // sun.rotation.y += 0.01;
 
 
-  controls.update();
+  // controls.update();
 
 
   // --------------------------------
@@ -524,7 +526,7 @@ function animate(time) {
 
   currentFocus.lerp(targetFocus, 0.035);
 
-  controls.target.copy(currentFocus);
+  // controls.target.copy(currentFocus);
 
 
   // --------------------------------
