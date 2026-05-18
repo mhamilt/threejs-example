@@ -112,7 +112,7 @@ lightSphere.position.set(5, 0, 0);
 // BUILD POINT CLOUD
 // --------------------------------------------------
 
-const SCALE = 200;
+const SCALE = 20;
 
 const words = [];
 const positions = [];
@@ -167,8 +167,13 @@ const pointMaterial = new THREE.ShaderMaterial({
       vec4 mvPosition =
         modelViewMatrix * vec4(position, 1.0);
 
-      gl_PointSize =
-        pointSize * (300.0 / -mvPosition.z);
+      // gl_PointSize =
+      //   pointSize * (300.0 / -mvPosition.z);
+      gl_PointSize = clamp(
+        pointSize * (100.0 / -mvPosition.z),
+        1.0,
+        20.0
+      );
 
       gl_Position =
         projectionMatrix * mvPosition;
@@ -332,13 +337,13 @@ const sun = new THREE.Mesh(
   new THREE.SphereGeometry(30.9, 32, 32),
   lightSphereMaterial
 );
-sun.position.set(3 * SCALE, 0, 0);
 
 const sunLight = new THREE.PointLight(
   0xffffff,
   2000000
 );
-sunLight.position.set(3 * SCALE, 0, 0);
+sun.position.set(100 * SCALE, 0, 0);
+sunLight.position.set(100 * SCALE, 0, 0);
 
 
 hoverSphere.visible = false;
@@ -469,11 +474,11 @@ const currentFocus = new THREE.Vector3();
 
 function animate(time) {
 
-  requestAnimationFrame(animate);
+  // requestAnimationFrame(animate);  
 
   // Example 1: smooth circular motion
-  sun.position.x = Math.sin(time * 0.00003) * 2.5 * SCALE;
-  sun.position.y = Math.cos(time * 0.00003) * 2.5 * SCALE;
+  sun.position.x = Math.sin(time * 0.00003) * 30 * SCALE;
+  sun.position.y = Math.cos(time * 0.00003) * 30 * SCALE;
   sunLight.position.x = sun.position.x;
   sunLight.position.y = sun.position.y;
 
@@ -536,7 +541,7 @@ function animate(time) {
   renderer.render(scene, camera);
 }
 
-animate();
+renderer.setAnimationLoop(animate);
 
 
 // --------------------------------------------------
